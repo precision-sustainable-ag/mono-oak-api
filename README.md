@@ -1,0 +1,1 @@
+This will be the starting point for the Flask API used to capture images on the Oak-D CM4 Camera
