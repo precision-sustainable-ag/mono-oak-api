@@ -17,16 +17,21 @@ def capture_image(image_type):
   print("making buffer!")
   byte = p.get_preview(image_type)
   print(byte)
-  print("got bytes!")
-  _, img_encoded = cv2.imencode('.png', byte)
-  print("buffer made!")
-  byte_stream = img_encoded.tobytes()
-  # print(byte_stream)
 
-  response = make_response(byte_stream)
-  response.headers.set('Content-Type', 'image/png')
+  if byte is not None:
+    print("got bytes!")
+    _, img_encoded = cv2.imencode('.png', byte)
+    print("buffer made!")
+    byte_stream = img_encoded.tobytes()
+    # print(byte_stream)
 
-  return response
+    response = make_response(byte_stream)
+    response.headers.set('Content-Type', 'image/png')
+
+    return response
+
+  else: 
+    return "No image!"
 
 @app.route('/')
 def index():
