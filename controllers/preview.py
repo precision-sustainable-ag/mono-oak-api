@@ -14,7 +14,7 @@ class Previewer():
 		self.cd = cd
 
 	def initialize_queues(self):
-		self.preview_queue = self.cd.device.getOutputQueue(name="preview", maxSize=1, blocking=False)
+		# self.preview_queue = self.cd.device.getOutputQueue(name="preview", maxSize=1, blocking=False)
 
 		self.rgb_queue = self.cd.device.getOutputQueue(name="rgb", maxSize=1, blocking=False)
 		# self.still_queue  = self.cd.device.getOutputQueue(name="still", maxSize=1, blocking=False)
@@ -31,9 +31,18 @@ class Previewer():
 		if img_out is not None:
 			print("Camera has frame! ", img_out)
 
+			
 			img_out = img_out.getCvFrame()
-			img_out = cv2.pyrDown(img_out)
-			img_out = cv2.pyrDown(img_out)
+			# print(img_out.shape)
+			# img_out = cv2.pyrDown(img_out)
+			# print(img_out.shape)
+			# img_out = cv2.pyrDown(img_out)
+			# print(img_out.shape)
+			# cv2.imwrite("test.png", img_out)
+
+			print(img_out.shape)
+			# img_out = cv2.merge((img_out,img_out,img_out))
+			print(img_out.shape)
 			cv2.imwrite("test.png", img_out)
 			
 			_, img_encoded = cv2.imencode('.png', img_out)

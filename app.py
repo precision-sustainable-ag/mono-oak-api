@@ -25,10 +25,6 @@ def start():
 def stop():
   cd.close_pipeline()
   return 'Server stopped!'
-
-@app.route('/snapshot')
-def snapshot():
-  return 'Here\'s a snapshot!'
   
 @app.route('/preview')
 def preview():
@@ -51,14 +47,3 @@ def mono_left():
 @app.route('/mono/right')
 def mono_right():
   return p.get_mono_right()
-
-#adding variables
-@app.route('/user/<username>')
-def show_user(username):
-  #returns the username
-  return 'Here\'s a right image!'
-
-@app.route('/post/<int:post_id>')
-def show_post(post_id):
-  #returns the post, the post_id should be an int
-  return str(post_id)

@@ -7,30 +7,30 @@ import cv2
 
 class CameraDevice():
     def upload_pipeline(self):
+        # Create pipeline
         pipeline = dai.Pipeline()
 
-        cam_rgb = pipeline.create(dai.node.ColorCamera)
-        cam_rgb.setBoardSocket(dai.CameraBoardSocket.RGB)
-        cam_rgb.setResolution(dai.ColorCameraProperties.SensorResolution.THE_12_MP)
+        camRgb = pipeline.create(dai.node.ColorCamera)
+        camRgb.setBoardSocket(dai.CameraBoardSocket.RGB)
+        camRgb.setResolution(dai.ColorCameraProperties.SensorResolution.THE_4_K)
 
-        manip = pipeline.create(dai.node.ImageManip)
-        manip.initialConfig.setCropRect(0.006, 0, 1, 1)
-        manip.setNumFramesPool(2)
-        manip.setMaxOutputFrameSize(18385920)
-        manip.initialConfig.setFrameType(dai.ImgFrame.Type.NV12)
-        cam_rgb.isp.link(manip.inputImage)
+        xoutRgb = pipeline.create(dai.node.XLinkOut)
+        xoutRgb.setStreamName("rgb")
+        camRgb.video.link(xoutRgb.input)
 
-        video_encoder = pipeline.create(dai.node.VideoEncoder)
-        video_encoder.setDefaultProfilePreset(1, dai.VideoEncoderProperties.Profile.MJPEG)
-        manip.out.link(video_encoder.input)
+        xin = pipeline.create(dai.node.XLinkIn)
+        xin.setStreamName("control")
+        xin.out.link(camRgb.inputControl)
 
-        xout_rgb = pipeline.createXLinkOut()
-        xout_rgb.setStreamName("rgb")
-        video_encoder.bitstream.link(xout_rgb.input)
+        # Properties
+        videoEnc = pipeline.create(dai.node.VideoEncoder)
+        videoEnc.setDefaultProfilePreset(1, dai.VideoEncoderProperties.Profile.MJPEG)
+        camRgb.still.link(videoEnc.input)
 
-        xout_rgb_p = pipeline.createXLinkOut()
-        xout_rgb_p.setStreamName("preview")
-        cam_rgb.preview.link(xout_rgb_p.input)
+        # Linking
+        # xoutStill = pipeline.create(dai.node.XLinkOut)
+        # xoutStill.setStreamName("preview")
+        # videoEnc.bitstream.link(xoutStill.input)
 
         # mono_right
         mono_right = pipeline.create(dai.node.MonoCamera)
