@@ -10,28 +10,6 @@ from controllers.pipeline import CameraDevice
 
 cd = CameraDevice()
 p = Previewer(cd)
-# rgb = RGB(cd)
-# l = MonoLeft(cd)
-
-def capture_image(image_type):
-  print("making buffer!")
-  byte = p.get_preview(image_type)
-  print(byte)
-
-  if byte is not None:
-    print("got bytes!")
-    _, img_encoded = cv2.imencode('.png', byte)
-    print("buffer made!")
-    byte_stream = img_encoded.tobytes()
-    # print(byte_stream)
-
-    response = make_response(byte_stream)
-    response.headers.set('Content-Type', 'image/png')
-
-    return response
-
-  else: 
-    return "No image!"
 
 @app.route('/')
 def index():
@@ -40,6 +18,7 @@ def index():
 @app.route('/start')
 def start():
   cd.upload_pipeline()
+  p.initialize_queues()
   return 'Server started!'
 
 @app.route('/stop')
@@ -53,25 +32,25 @@ def snapshot():
   
 @app.route('/preview')
 def preview():
-  return capture_image("preview")
+  return p.get_preview()
 
 #adding variables
 @app.route('/rgb')
 def rgb():
-  return capture_image("rgb")
+  return p.get_rgb()
 
 @app.route('/depth')
 def depth():
-  return capture_image("disparity")
+  return p.get_depth()
 
 #adding variables
 @app.route('/mono/left')
 def mono_left():
-  return capture_image("left")
+  return p.get_mono_left()
 
 @app.route('/mono/right')
 def mono_right():
-  return capture_image("right")
+  return p.get_mono_right()
 
 #adding variables
 @app.route('/user/<username>')

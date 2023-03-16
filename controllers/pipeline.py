@@ -34,11 +34,11 @@ class CameraDevice():
 
         # mono_right
         mono_right = pipeline.create(dai.node.MonoCamera)
-        xoutRight = pipeline.create(dai.node.XLinkOut)
-        xoutRight.setStreamName("right")
+        xout_right = pipeline.create(dai.node.XLinkOut)
+        xout_right.setStreamName("right")
         mono_right.setBoardSocket(dai.CameraBoardSocket.RIGHT)
         mono_right.setResolution(dai.MonoCameraProperties.SensorResolution.THE_720_P)
-        mono_right.out.link(xoutRight.input)
+        mono_right.out.link(xout_right.input)
 
         # mono_left
         mono_left = pipeline.create(dai.node.MonoCamera)
@@ -63,6 +63,11 @@ class CameraDevice():
         self.depth.disparity.link(xout_depth.input)
 
         self.device = dai.Device(pipeline)
+
+        # still
+        # xout_still = pipeline.create(dai.node.XLinkOut)
+        # xout_still.setStreamName("still")
+        # video_encoder.bitstream.link(xout_still.input)
 
     def close_pipeline(self):
         self.device.close()
