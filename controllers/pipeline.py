@@ -10,27 +10,19 @@ class CameraDevice():
         # Create pipeline
         pipeline = dai.Pipeline()
 
-        camRgb = pipeline.create(dai.node.ColorCamera)
-        camRgb.setBoardSocket(dai.CameraBoardSocket.RGB)
-        camRgb.setResolution(dai.ColorCameraProperties.SensorResolution.THE_4_K)
+        # full resolution RGB
+        cam_rgb = pipeline.create(dai.node.ColorCamera)
+        cam_rgb.setBoardSocket(dai.CameraBoardSocket.RGB)
+        cam_rgb.setResolution(dai.ColorCameraProperties.SensorResolution.THE_12_MP)
+        xout_rgb = pipeline.create(dai.node.XLinkOut)
+        xout_rgb.setStreamName("rgb")
+        cam_rgb.video.link(xout_rgb.input)
 
-        xoutRgb = pipeline.create(dai.node.XLinkOut)
-        xoutRgb.setStreamName("rgb")
-        camRgb.video.link(xoutRgb.input)
-
-        xin = pipeline.create(dai.node.XLinkIn)
-        xin.setStreamName("control")
-        xin.out.link(camRgb.inputControl)
-
-        # Properties
-        videoEnc = pipeline.create(dai.node.VideoEncoder)
-        videoEnc.setDefaultProfilePreset(1, dai.VideoEncoderProperties.Profile.MJPEG)
-        camRgb.still.link(videoEnc.input)
-
-        # Linking
-        # xoutStill = pipeline.create(dai.node.XLinkOut)
-        # xoutStill.setStreamName("preview")
-        # videoEnc.bitstream.link(xoutStill.input)
+        # preview rgb
+        cam_rgb.setPreviewSize(640, 480)
+        xout_preview = pipeline.create(dai.node.XLinkOut)
+        xout_preview.setStreamName("preview")
+        cam_rgb.preview.link(xout_preview.input)
 
         # mono_right
         mono_right = pipeline.create(dai.node.MonoCamera)
@@ -63,11 +55,6 @@ class CameraDevice():
         self.depth.disparity.link(xout_depth.input)
 
         self.device = dai.Device(pipeline)
-
-        # still
-        # xout_still = pipeline.create(dai.node.XLinkOut)
-        # xout_still.setStreamName("still")
-        # video_encoder.bitstream.link(xout_still.input)
 
     def close_pipeline(self):
         self.device.close()

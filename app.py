@@ -1,12 +1,10 @@
 from flask import Flask, send_file, make_response
 import cv2
-# from preview import Preview
-app = Flask(__name__)
 
 from controllers.preview import Previewer
 from controllers.pipeline import CameraDevice
-# from controllers.rgb import RGB
-# from controllers.mono_left import MonoLeft
+
+app = Flask(__name__)
 
 cd = CameraDevice()
 p = Previewer(cd)
