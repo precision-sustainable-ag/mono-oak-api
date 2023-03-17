@@ -30,8 +30,8 @@ class Previewer():
 			
 			_, img_encoded = cv2.imencode('.png', img_out)
 			byte_stream = img_encoded.tobytes()
-			response = make_response(byte_stream)
-			response.headers.set('Content-Type', 'image/png')
+
+			return byte_stream
 
 		else:
 			response = "No image!"

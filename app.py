@@ -1,5 +1,7 @@
 from flask import Flask, send_file, make_response
 import cv2
+import io
+# from werkzeug import FileWrapper
 
 from controllers.preview import Previewer
 from controllers.pipeline import CameraDevice
@@ -26,22 +28,27 @@ def stop():
   
 @app.route('/preview')
 def preview():
-  return p.get_preview()
+  byte_stream = p.get_preview()
+  return send_file(io.BytesIO(byte_stream), attachment_filename="preview.png", mimetype="image/png")
 
 #adding variables
 @app.route('/rgb')
 def rgb():
-  return p.get_rgb()
+  byte_stream = p.get_rgb()
+  return send_file(io.BytesIO(byte_stream), attachment_filename="rgb.png", mimetype="image/png")
 
 @app.route('/depth')
 def depth():
-  return p.get_depth()
+  byte_stream = p.get_depth()
+  return send_file(io.BytesIO(byte_stream), attachment_filename="depth.png", mimetype="image/png")
 
 #adding variables
 @app.route('/mono/left')
 def mono_left():
-  return p.get_mono_left()
+  byte_stream = p.get_mono_left()
+  return send_file(io.BytesIO(byte_stream), attachment_filename="mono_left.png", mimetype="image/png")
 
 @app.route('/mono/right')
 def mono_right():
-  return p.get_mono_right()
+  byte_stream = p.get_mono_right()
+  return send_file(io.BytesIO(byte_stream), attachment_filename="mono_right.png", mimetype="image/png")
