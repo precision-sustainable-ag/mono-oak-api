@@ -1,10 +1,4 @@
-import depthai as dai
-import numpy as np
-import json
-import socket
-import time
 import cv2
-from flask import make_response
 
 class Previewer():
 	def __init__(self, cd):

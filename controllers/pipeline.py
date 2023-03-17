@@ -1,9 +1,4 @@
 import depthai as dai
-import numpy as np
-import json
-import socket
-import time
-import cv2
 
 class CameraDevice():
     def upload_pipeline(self):

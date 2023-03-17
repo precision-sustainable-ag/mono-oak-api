@@ -1,7 +1,5 @@
-from flask import Flask, send_file, make_response
-import cv2
+from flask import Flask, send_file
 import io
-# from werkzeug import FileWrapper
 
 from controllers.preview import Previewer
 from controllers.pipeline import CameraDevice
