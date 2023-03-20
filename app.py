@@ -1,13 +1,21 @@
 from flask import Flask, send_file
+from flask_restful import Resource, Api
 import io
 
-from controllers.preview import Previewer
-from controllers.pipeline import CameraDevice
+from common.preview import Previewer
+from common.pipeline import CameraDevice
 
 app = Flask(__name__)
+api = Api(app)
 
 cd = CameraDevice()
 p = Previewer(cd)
+
+# api.add_resource(Foo, '/Foo', '/Foo/<string:id>')
+# api.add_resource(Bar, '/Bar', '/Bar/<string:id>')
+# api.add_resource(Baz, '/Baz', '/Baz/<string:id>')
+# api.add_resource(Bar, '/Bar', '/Bar/<string:id>')
+# api.add_resource(Baz, '/Baz', '/Baz/<string:id>')
 
 @app.route('/')
 def index():
