@@ -1,4 +1,5 @@
 import cv2
+import numpy as np
 
 class Previewer():
 	def __init__(self, cd):
@@ -11,18 +12,19 @@ class Previewer():
 		self.right_queue = self.cd.device.getOutputQueue(name="right", maxSize=1, blocking=False)
 		self.disparity_queue = self.cd.device.getOutputQueue(name="disparity", maxSize=1, blocking=False)
 
-	def get_frame(self, queue):
+	def get_frame(self, queue, img_type):
 		img_out = queue.tryGet()
 
-		print(img_out)
-
 		if img_out is not None:
-			print("Camera has frame! ", img_out)
-
-			
 			img_out = img_out.getCvFrame()
-			
-			_, img_encoded = cv2.imencode('.png', img_out)
+
+			if img_type == "depth":
+				img_out = (img_out * (255 / self.cd.depth.initialConfig.getMaxDisparity())).astype(np.uint8)
+				_, img_encoded = cv2.imencode('.png', img_out)
+			else:
+				encode_param = [int(cv2.IMWRITE_JPEG_QUALITY), 98]
+				_, img_encoded = cv2.imencode('.jpg', img_out, encode_param)
+
 			byte_stream = img_encoded.tobytes()
 
 			return byte_stream
@@ -33,16 +35,16 @@ class Previewer():
 		return response
 
 	def get_preview(self):
-		return self.get_frame(self.preview_queue)
+		return self.get_frame(self.preview_queue, "preview")
 
 	def get_rgb(self):
-		return self.get_frame(self.rgb_queue)
+		return self.get_frame(self.rgb_queue, "rgb")
 
 	def get_mono_left(self):
-		return self.get_frame(self.left_queue)
+		return self.get_frame(self.left_queue, "left")
 
 	def get_mono_right(self):
-		return self.get_frame(self.right_queue)
+		return self.get_frame(self.right_queue, "right")
 
 	def get_depth(self):
-		return self.get_frame(self.disparity_queue)
+		return self.get_frame(self.disparity_queue, "depth")
