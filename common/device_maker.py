@@ -1,7 +1,19 @@
 import depthai as dai
 
+# DEVICE = None
+
 class CameraDevice():
+    status = "inactive"
+    _shared_borg_state = {}
+    
+    def __new__(cls, *args, **kwargs):
+        obj = super(CameraDevice, cls).__new__(cls, *args, **kwargs)
+        obj.__dict__ = cls._shared_borg_state
+        return obj
+
     def upload_pipeline(self):
+        # global DEVICE
+        
         # Create pipeline
         pipeline = dai.Pipeline()
 
@@ -50,7 +62,10 @@ class CameraDevice():
         self.depth.disparity.link(xout_depth.input)
 
         self.device = dai.Device(pipeline)
+        self.status = "active"
+        # DEVICE = self.device
 
     def close_pipeline(self):
         self.device.close()
+        self.status = "inactive"
 
