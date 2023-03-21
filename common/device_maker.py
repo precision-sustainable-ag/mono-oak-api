@@ -19,7 +19,7 @@ class CameraDevice():
         cam_rgb.setResolution(dai.ColorCameraProperties.SensorResolution.THE_12_MP)
         xout_rgb = pipeline.create(dai.node.XLinkOut)
         xout_rgb.setStreamName("rgb")
-        cam_rgb.video.link(xout_rgb.input)
+        cam_rgb.isp.link(xout_rgb.input)
 
         # preview rgb
         cam_rgb.setPreviewSize(640, 480)

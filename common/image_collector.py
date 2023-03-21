@@ -20,12 +20,14 @@ class Collector():
 		img_out = queue.tryGet()
 
 		if img_out is not None:
-			img_out = img_out.getCvFrame()
-
 			if img_type == "depth":
+				img_out = img_out.getCvFrame()
 				img_out = (img_out * (255 / depth.initialConfig.getMaxDisparity())).astype(np.uint8)
 				_, img_encoded = cv2.imencode('.png', img_out)
+			elif 'img_type' == 'rgb':
+				img_encoded = img_out.getData()
 			else:
+				img_out = img_out.getCvFrame()
 				encode_param = [int(cv2.IMWRITE_JPEG_QUALITY), 98]
 				_, img_encoded = cv2.imencode('.jpg', img_out, encode_param)
 
@@ -33,7 +35,4 @@ class Collector():
 
 			return byte_stream
 
-		else:
-			response = "No image!"
-
-		return response
+		return None

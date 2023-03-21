@@ -11,7 +11,7 @@ class RGB(Resource):
         c = Collector()
         byte_stream = c.get_frame(c.rgb_queue, "rgb")
 
-        if isinstance(byte_stream, str):
+        if byte_stream is None:
             return {'status': 'error', 'info': 'no image!'}, 400
-        else:
-            return send_file(io.BytesIO(byte_stream), attachment_filename="rgb.png", mimetype="image/jpeg")
+
+        return send_file(io.BytesIO(byte_stream), attachment_filename="rgb.png", mimetype="image/jpeg")

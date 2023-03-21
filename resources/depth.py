@@ -12,7 +12,7 @@ class Depth(Resource):
 
         byte_stream = c.get_frame(c.disparity_queue, "depth", cd.depth)
 
-        if isinstance(byte_stream, str):
+        if byte_stream is None:
             return {'status': 'error', 'info': 'no image!'}, 400
-        else:
-            return send_file(io.BytesIO(byte_stream), attachment_filename="depth.png", mimetype="image/png")
+            
+        return send_file(io.BytesIO(byte_stream), attachment_filename="depth.png", mimetype="image/png")
