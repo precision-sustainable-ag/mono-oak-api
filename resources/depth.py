@@ -10,6 +10,9 @@ class Depth(Resource):
         cd = CameraDevice()
         c = Collector()
 
-        byte_stream = c.get_frame(c.depth_queue, "depth")
+        byte_stream = c.get_frame(c.disparity_queue, "depth", cd.depth)
 
-        return send_file(io.BytesIO(byte_stream), attachment_filename="preview.png", mimetype="image/png")
+        if isinstance(byte_stream, str):
+            return {'status': 'error', 'info': 'no image!'}, 400
+        else:
+            return send_file(io.BytesIO(byte_stream), attachment_filename="depth.png", mimetype="image/png")

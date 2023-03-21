@@ -15,7 +15,10 @@ class Mono(Resource):
         elif side == 'left':
             byte_stream = c.get_frame(c.left_queue, "left")
         else:
-            return {'status': 'error'}, 500
+            return {'status': 'error', 'info': 'invalid camera specified. use left or right!'}, 400
 
-        return send_file(io.BytesIO(byte_stream), attachment_filename="preview.png", mimetype="image/jpeg")
+        if isinstance(byte_stream, str):
+            return {'status': 'error', 'info': 'no image!'}, 400
+        else:
+            return send_file(io.BytesIO(byte_stream), attachment_filename="mono_{}.png".format(side), mimetype="image/jpeg")
         # return {'status': cd.status}, 200

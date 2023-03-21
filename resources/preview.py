@@ -11,5 +11,8 @@ class Preview(Resource):
         c = Collector()
         byte_stream = c.get_frame(c.preview_queue, "preview")
 
-        return send_file(io.BytesIO(byte_stream), attachment_filename="preview.png", mimetype="image/jpeg")
+        if isinstance(byte_stream, str):
+            return {'status': 'error', 'info': 'no image!'}, 400
+        else:
+            return send_file(io.BytesIO(byte_stream), attachment_filename="preview.png", mimetype="image/jpeg")
         # return {'status': cd.status}, 200

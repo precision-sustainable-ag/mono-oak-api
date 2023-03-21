@@ -7,13 +7,22 @@ class Status(Resource):
     def get(self, action):
         if action == 'start':
             cd = CameraDevice()
-            cd.upload_pipeline()
             c = Collector()
-            c.initialize_queues(cd)
-            return {'status': cd.status}, 200
+            
+            if cd.status == 'inactive':
+                cd.upload_pipeline()
+                c.initialize_queues(cd)
+                return {'status': cd.status}, 200
+            else:
+                return {'status': 'error', 'info': 'pipeline already uploaded!'}, 400
+
         elif action == 'stop':
             cd = CameraDevice()
-            cd.close_pipeline()
-            return {'status': cd.status}, 200
+            if cd.status == 'active':
+                cd.close_pipeline()
+                return {'status': cd.status}, 200
+            else:
+                return {'status': 'error', 'info': 'pipeline not uploaded!'}, 400
+
         else:
-            return {'status': 'error'}, 500
+            return {'status': 'error', 'info': 'invalid option specified. use start or stop!'}, 400
