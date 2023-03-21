@@ -15,4 +15,3 @@ class Preview(Resource):
             return {'status': 'error', 'info': 'no image!'}, 400
         else:
             return send_file(io.BytesIO(byte_stream), attachment_filename="preview.png", mimetype="image/jpeg")
-        # return {'status': cd.status}, 200

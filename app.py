@@ -19,8 +19,6 @@ def register_endpoints(api):
   api.add_resource(Mono, '/mono', '/mono/<string:side>')
 
 def create_app(debug=True):
-    # config = LocalConfig if debug else LiveConfig
-
     # Create app
     app = Flask(__name__)
 

@@ -21,4 +21,3 @@ class Mono(Resource):
             return {'status': 'error', 'info': 'no image!'}, 400
         else:
             return send_file(io.BytesIO(byte_stream), attachment_filename="mono_{}.png".format(side), mimetype="image/jpeg")
-        # return {'status': cd.status}, 200

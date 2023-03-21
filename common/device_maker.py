@@ -1,7 +1,5 @@
 import depthai as dai
 
-# DEVICE = None
-
 class CameraDevice():
     status = "inactive"
     _shared_borg_state = {}
@@ -11,9 +9,7 @@ class CameraDevice():
         obj.__dict__ = cls._shared_borg_state
         return obj
 
-    def upload_pipeline(self):
-        # global DEVICE
-        
+    def upload_pipeline(self):        
         # Create pipeline
         pipeline = dai.Pipeline()
 

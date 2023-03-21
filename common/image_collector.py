@@ -9,10 +9,6 @@ class Collector():
 		obj.__dict__ = cls._shared_borg_state
 		return obj
 
-	# def __init__(self, cd):
-	# 	super().__init__(*args, **kwargs)
-	# 	self.cd = cd
-
 	def initialize_queues(self, cd):
 		self.preview_queue = cd.device.getOutputQueue(name="preview", maxSize=1, blocking=False)
 		self.rgb_queue = cd.device.getOutputQueue(name="rgb", maxSize=1, blocking=False)
@@ -41,18 +37,3 @@ class Collector():
 			response = "No image!"
 
 		return response
-
-	# def get_preview(self):
-	# 	return self.get_frame(self.preview_queue, "preview")
-
-	# def get_rgb(self):
-	# 	return self.get_frame(self.rgb_queue, "rgb")
-
-	# def get_mono_left(self):
-	# 	return self.get_frame(self.left_queue, "left")
-
-	# def get_mono_right(self):
-	# 	return self.get_frame(self.right_queue, "right")
-
-	# def get_depth(self):
-	# 	return self.get_frame(self.disparity_queue, "depth")
