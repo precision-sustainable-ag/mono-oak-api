@@ -20,12 +20,22 @@ class Collector():
 		img_out = queue.tryGet()
 
 		if img_out is not None:
+			sequence_number = img_out.getSequenceNum()
+			print(sequence_number)
+
+			# sensitivity = img_out.getSensitivity()
+			# print(sensitivity)
+
+			exposure_time = img_out.getExposureTime()
+			print(exposure_time)
+
 			if img_type == "depth":
 				img_out = img_out.getCvFrame()
-				img_out = (img_out * (255 / depth.initialConfig.getMaxDisparity())).astype(np.uint8)
+				img_out = (img_out * (255 / depth.initialConfig.getMaxDisparity())).astype(np.uint16)
 				_, img_encoded = cv2.imencode('.png', img_out)
-			elif 'img_type' == 'rgb':
+			elif img_type == 'rgb':								
 				img_encoded = img_out.getData()
+				
 			else:
 				img_out = img_out.getCvFrame()
 				encode_param = [int(cv2.IMWRITE_JPEG_QUALITY), 98]

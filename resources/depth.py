@@ -15,4 +15,4 @@ class Depth(Resource):
         if byte_stream is None:
             return {'status': 'error', 'info': 'no image!'}, 400
             
-        return send_file(io.BytesIO(byte_stream), attachment_filename="depth.png", mimetype="image/png")
+        return send_file(io.BytesIO(byte_stream), download_name="depth.png", mimetype="image/png")

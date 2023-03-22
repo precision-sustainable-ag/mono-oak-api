@@ -1,7 +1,9 @@
+aniso8601==9.0.1
 arandr==0.1.10
 argcomplete==1.12.1
 astroid==2.5.1
 asttokens==2.0.4
+attrs==22.2.0
 automationhat==0.2.0
 beautifulsoup4==4.9.3
 blinker==1.4
@@ -23,13 +25,17 @@ dbus-python==1.2.16
 Deprecated==1.2.13
 depthai==2.17.3.0
 -e git+https://github.com/luxonis/depthai.git@41b95a9e225562fcbb4f5815b0767afa2167d79d#egg=depthai_sdk&subdirectory=depthai_sdk
+distlib==0.3.6
 distro==1.5.0
 docutils==0.16
 drumhat==0.1.0
 envirophat==1.0.0
+exceptiongroup==1.1.1
 ExplorerHAT==0.4.2
 ffmpy3==0.2.4
+filelock==3.10.0
 Flask==1.1.2
+Flask-RESTful==0.3.9
 fourletterphat==0.1.0
 gcloud==0.18.3
 googleapis-common-protos==1.53.0
@@ -37,6 +43,7 @@ gpiozero==1.6.2
 html5lib==1.1
 httplib2==0.20.2
 idna==2.10
+iniconfig==2.0.0
 isort==5.6.4
 itsdangerous==1.1.0
 jedi==0.18.0
@@ -62,6 +69,7 @@ oauthlib==3.1.0
 olefile==0.46
 opencv-contrib-python==4.4.0.46
 opencv-python==4.4.0.46
+packaging==23.0
 pantilthat==0.0.7
 parso==0.8.1
 pexpect==4.8.0
@@ -72,6 +80,8 @@ picamera==1.13
 piglow==1.2.5
 pigpio==1.78
 Pillow==8.1.2
+platformdirs==3.1.1
+pluggy==1.0.0
 protobuf==3.19.1
 psutil==5.8.0
 pyasn1==0.4.8
@@ -92,11 +102,13 @@ PyQt5-sip==12.8.1
 Pyrebase4==4.5.0
 pyserial==3.5b0
 pysmbc==1.0.23
+pytest==7.2.2
 python-apt==2.2.1
 python-dateutil==2.8.2
 python-jwt==3.3.1
 pytube==11.0.1
 PyTurboJPEG==1.6.4
+pytz==2022.7.1
 pyusb==1.2.1
 PyYAML==6.0
 rainbowhat==0.1.0
@@ -116,7 +128,7 @@ s3transfer==0.3.7
 scrollphat==0.0.7
 scrollphathd==1.2.1
 Send2Trash==1.6.0b1
-sense-hat==2.2.0
+sense-hat==2.4.0
 sentry-sdk==1.5.1
 simplejson==3.17.2
 six==1.16.0
@@ -125,14 +137,16 @@ sn3218==1.2.7
 soupsieve==2.2.1
 spidev==3.5
 ssh-import-id==5.10
-thonny==3.3.14
+thonny==4.0.1
 toml==0.10.1
+tomli==2.0.1
 touchphat==0.0.1
 twython==3.8.2
 typed-ast==1.4.2
 typing-extensions==3.7.4.3
 unicornhathd==0.0.4
 urllib3==1.26.5
+virtualenv==20.21.0
 webencodings==0.5.1
 Werkzeug==1.0.1
 wrapt==1.12.1
