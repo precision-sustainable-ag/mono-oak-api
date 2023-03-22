@@ -20,4 +20,4 @@ class Mono(Resource):
         if byte_stream is None:
             return {'status': 'error', 'info': 'no image!'}, 400
 
-        return send_file(io.BytesIO(byte_stream), attachment_filename="mono_{}.png".format(side), mimetype="image/jpeg")
+        return send_file(io.BytesIO(byte_stream), download_name="mono_{}.png".format(side), mimetype="image/jpeg")

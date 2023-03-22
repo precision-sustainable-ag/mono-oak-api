@@ -14,4 +14,4 @@ class Preview(Resource):
         if byte_stream is None:
             return {'status': 'error', 'info': 'no image!'}, 400
 
-        return send_file(io.BytesIO(byte_stream), attachment_filename="preview.png", mimetype="image/jpeg")
+        return send_file(io.BytesIO(byte_stream), download_name="preview.png", mimetype="image/jpeg")
