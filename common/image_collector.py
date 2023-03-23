@@ -23,8 +23,8 @@ class Collector():
 			sequence_number = img_out.getSequenceNum()
 			print(sequence_number)
 
-			# sensitivity = img_out.getSensitivity()
-			# print(sensitivity)
+			sensitivity = img_out.getSensitivity()
+			print(sensitivity)
 
 			exposure_time = img_out.getExposureTime()
 			print(exposure_time)
