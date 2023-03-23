@@ -1,0 +1,11 @@
+[Unit]
+Description=My Project
+After=network.target
+
+[Service]
+WorkingDirectory=/home/pi/project/
+ExecStart=/usr/bin/python /home/pi/repos/script.py
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
