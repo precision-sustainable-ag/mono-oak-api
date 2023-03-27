@@ -29,7 +29,7 @@ class CameraDevice():
             while True:
                 frame = node.io['isp'].get()
                 num = frame.getSequenceNum()
-                if (num%5) == 0:
+                if (num%30) == 0:
                     node.io['frame'].send(frame)
         """)
 
@@ -41,14 +41,14 @@ class CameraDevice():
         manip.initialConfig.setFrameType(dai.ImgFrame.Type.NV12)
         script.outputs['frame'].link(manip.inputImage)
 
-        videoEnc = pipeline.create(dai.node.VideoEncoder)
-        videoEnc.setDefaultProfilePreset(1, dai.VideoEncoderProperties.Profile.MJPEG)
-        videoEnc.setQuality(98)
-        manip.out.link(videoEnc.input)
+        video_encoder = pipeline.create(dai.node.VideoEncoder)
+        video_encoder.setDefaultProfilePreset(1, dai.VideoEncoderProperties.Profile.MJPEG)
+        video_encoder.setQuality(98)
+        manip.out.link(video_encoder.input)
 
         xout_rgb = pipeline.create(dai.node.XLinkOut)
         xout_rgb.setStreamName("rgb")
-        videoEnc.bitstream.link(xout_rgb.input)
+        video_encoder.bitstream.link(xout_rgb.input)
 
         # preview rgb
         cam_rgb.setPreviewSize(640, 480)
@@ -62,15 +62,37 @@ class CameraDevice():
         xout_right.setStreamName("right")
         mono_right.setBoardSocket(dai.CameraBoardSocket.RIGHT)
         mono_right.setResolution(dai.MonoCameraProperties.SensorResolution.THE_800_P)
-        mono_right.out.link(xout_right.input)
+        # mono_right.out.link(xout_right.input)
+
+        script_right = pipeline.createScript()
+        mono_right.out.link(script_right.inputs['inr'])
+        script_right.setScript("""
+            while True:
+                frame = node.io['inr'].get()
+                num = frame.getSequenceNum()
+                if (num%30) == 0:
+                    node.io['framer'].send(frame)
+        """)
+        script_right.outputs['framer'].link(xout_right.input)
 
         # mono_left
         mono_left = pipeline.create(dai.node.MonoCamera)
-        xoutLeft = pipeline.create(dai.node.XLinkOut)
-        xoutLeft.setStreamName("left")
+        xout_left = pipeline.create(dai.node.XLinkOut)
+        xout_left.setStreamName("left")
         mono_left.setBoardSocket(dai.CameraBoardSocket.LEFT)
         mono_left.setResolution(dai.MonoCameraProperties.SensorResolution.THE_800_P)
-        mono_left.out.link(xoutLeft.input)
+        # mono_left.out.link(xout_left.input)
+
+        script_left = pipeline.createScript()
+        mono_left.out.link(script_left.inputs['inl'])
+        script_left.setScript("""
+            while True:
+                frame = node.io['inl'].get()
+                num = frame.getSequenceNum()
+                if (num%30) == 0:
+                    node.io['framel'].send(frame)
+        """)
+        script_left.outputs['framel'].link(xout_left.input)
 
         # depth
         self.depth = pipeline.create(dai.node.StereoDepth)
