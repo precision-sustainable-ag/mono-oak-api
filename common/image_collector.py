@@ -33,6 +33,7 @@ class Collector():
 				img_out = img_out.getCvFrame()
 				img_out = (img_out * (255 / depth.initialConfig.getMaxDisparity())).astype(np.uint16)
 				_, img_encoded = cv2.imencode('.png', img_out)
+			
 			elif img_type == 'rgb':								
 				img_encoded = img_out.getData()
 				
@@ -43,6 +44,6 @@ class Collector():
 
 			byte_stream = img_encoded.tobytes()
 
-			return byte_stream
+			return byte_stream, sequence_number, sensitivity, exposure_time
 
 		return None

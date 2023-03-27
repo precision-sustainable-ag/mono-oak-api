@@ -1,4 +1,4 @@
-from flask_restful import Resource, fields, marshal_with
+from flask_restful import Resource
 
 from common.device_maker import CameraDevice
 from common.image_collector import Collector
