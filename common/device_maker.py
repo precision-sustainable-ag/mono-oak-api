@@ -106,7 +106,17 @@ class CameraDevice():
         xout_depth.setStreamName("disparity")
         mono_right.out.link(self.depth.right)
         mono_left.out.link(self.depth.left)
-        self.depth.disparity.link(xout_depth.input)
+
+        script_depth = pipeline.createScript()
+        self.depth.disparity.link(script_depth.inputs['depthframes'])
+        script_depth.setScript("""
+            while True:
+                frame = node.io['depthframes'].get()
+                num = frame.getSequenceNum()
+                if (num%30) == 0:
+                    node.io['framedepth'].send(frame)
+        """)
+        script_depth.outputs['framedepth'].link(xout_depth.input)
 
         self.device = dai.Device(pipeline)
         self.status = "active"

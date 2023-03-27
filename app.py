@@ -6,12 +6,15 @@ from common.image_collector import Collector
 from common.device_maker import CameraDevice
 
 from resources.status import Status
+from resources.snapshot import Snapshot
 from resources.preview import Preview
 from resources.rgb import RGB
 from resources.depth import Depth
 from resources.mono import Mono
 
+
 def register_endpoints(api):
+  api.add_resource(Snapshot, '/snapshot', '/snapshot')
   api.add_resource(Status, '/status', '/status/<string:action>')
   api.add_resource(Preview, '/preview')
   api.add_resource(RGB, '/rgb')
