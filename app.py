@@ -12,7 +12,6 @@ from resources.rgb import RGB
 from resources.depth import Depth
 from resources.mono import Mono
 
-
 def register_endpoints(api):
   api.add_resource(Snapshot, '/snapshot', '/snapshot')
   api.add_resource(Status, '/status', '/status/<string:action>')

@@ -1,23 +1,23 @@
 from flask_restful import Resource
-from flask import make_response, send_file    
+from flask import make_response, send_from_directory    
 import io
 
-from common.device_maker import CameraDevice
 from common.image_collector import Collector
 
 class Depth(Resource):
     def get(self):
-        cd = CameraDevice()
         c = Collector()
 
-        byte_stream, sequence_number, sensitivity, exposure_time = c.get_frame(c.disparity_queue, "depth", cd.depth)
+        local_file = c.find_file('depth')
 
-        if byte_stream is None:
+        if local_file is None:
             return {'status': 'error', 'info': 'no image!'}, 400
 
-        response = make_response(send_file(io.BytesIO(byte_stream), download_name="depth.png", mimetype="image/png"))
+        response = make_response(send_from_directory('./images', local_file, download_name="depth.png", mimetype="image/png"))
+
+        [ img_type, sequence_number, sensitivity, exposure_time ] = local_file.split('_')
         response.headers['sequence_number'] = str(sequence_number)
         response.headers['sensitivity'] = str(sensitivity)
-        response.headers['exposure_time'] = str(exposure_time)
+        response.headers['exposure_time'] = str('.'.join(exposure_time.split('.')[:-1]))
             
         return response

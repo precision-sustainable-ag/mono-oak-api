@@ -1,28 +1,28 @@
 from flask_restful import Resource
-from flask import make_response, send_file    
+from flask import make_response, send_from_directory    
 import io
 
-from common.device_maker import CameraDevice
 from common.image_collector import Collector
 
 class Mono(Resource):
     def get(self, side):
-        cd = CameraDevice()
         c = Collector()
         
         if side == 'right':
-            byte_stream, sequence_number, sensitivity, exposure_time = c.get_frame(c.right_queue, "right")
+            local_file = c.find_file('right')
         elif side == 'left':
-            byte_stream, sequence_number, sensitivity, exposure_time = c.get_frame(c.left_queue, "left")
+            local_file = c.find_file('left')
         else:
             return {'status': 'error', 'info': 'invalid camera specified. use left or right!'}, 400
 
-        if byte_stream is None:
+        if local_file is None:
             return {'status': 'error', 'info': 'no image!'}, 400
 
-        response = make_response(send_file(io.BytesIO(byte_stream), download_name="mono_{}.jpg".format(side), mimetype="image/jpeg"))
+        response = make_response(send_from_directory('./images', local_file, download_name="mono_{}.jpg".format(side), mimetype="image/jpeg"))
+
+        [ img_type, sequence_number, sensitivity, exposure_time ] = local_file.split('_')
         response.headers['sequence_number'] = str(sequence_number)
         response.headers['sensitivity'] = str(sensitivity)
-        response.headers['exposure_time'] = str(exposure_time)
+        response.headers['exposure_time'] = str('.'.join(exposure_time.split('.')[:-1]))
 
         return response
