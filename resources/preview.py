@@ -10,14 +10,11 @@ class Preview(Resource):
         cd = CameraDevice()
         c = Collector()
 
-        byte_stream, sequence_number, sensitivity, exposure_time = c.get_frame(c.preview_queue, "preview")
+        byte_stream = c.get_frame(c.preview_queue, "preview")
 
         if byte_stream is None:
             return {'status': 'error', 'info': 'no image!'}, 400
 
         response = make_response(send_file(io.BytesIO(byte_stream), download_name="preview.jpg", mimetype="image/jpeg"))
-        response.headers['sequence_number'] = str(sequence_number)
-        response.headers['sensitivity'] = str(sensitivity)
-        response.headers['exposure_time'] = str(exposure_time)
 
         return response

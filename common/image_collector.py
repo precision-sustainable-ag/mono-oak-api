@@ -24,6 +24,20 @@ class Collector():
 					print(file)
 					return file
 
+	def get_frame(self, queue, img_type, depth=None):
+		img_out = queue.tryGet()
+
+		if img_out is not None:
+			img_out = img_out.getCvFrame()
+			encode_param = [int(cv2.IMWRITE_JPEG_QUALITY), 98]
+			_, img_encoded = cv2.imencode('.jpg', img_out, encode_param)
+
+			byte_stream = img_encoded.tobytes()
+
+			return byte_stream
+
+		return None
+
 	def save_frames(self, depth):
 		folder = './images'
 		for filename in os.listdir(folder):
