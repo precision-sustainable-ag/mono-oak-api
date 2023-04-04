@@ -14,7 +14,7 @@ class Collector():
 		self.rgb_queue = cd.device.getOutputQueue(name="rgb", maxSize=1, blocking=False)
 		self.left_queue = cd.device.getOutputQueue(name="left", maxSize=1, blocking=False)
 		self.right_queue = cd.device.getOutputQueue(name="right", maxSize=1, blocking=False)
-		self.disparity_queue = cd.device.getOutputQueue(name="disparity", maxSize=1, blocking=False)
+		self.depth_queue = cd.device.getOutputQueue(name="depth", maxSize=1, blocking=False)
 
 	def find_file(self, img_type):
 		folder = './images'
@@ -52,7 +52,7 @@ class Collector():
 
 
 		image_data = [
-			{'img_type': 'depth', 'queue': self.disparity_queue},
+			{'img_type': 'depth', 'queue': self.depth_queue},
             {'img_type': 'right', 'queue': self.right_queue}, 
             {'img_type': 'left', 'queue': self.left_queue},
             {'img_type': 'rgb', 'queue': self.rgb_queue}, 
@@ -94,7 +94,7 @@ class Collector():
 			if data.get('img_type') == "depth":
 				# print(depth)
 				img_out = data.get('img_out').getCvFrame()
-				img_out = (img_out * (255 / depth.initialConfig.getMaxDisparity())).astype(np.uint16)
+				img_out = img_out.astype(np.uint16)
 				cv2.imwrite('./images/{}_{}_{}_{}.png'.format(data.get('img_type'), data.get('sequence_number'), data.get('sensitivity'), data.get('exposure_time')), img_out)
 			elif data.get('img_type') == 'rgb':
 				with open("./images/{}_{}_{}_{}.jpg".format(data.get('img_type'), data.get('sequence_number'), data.get('sensitivity'), data.get('exposure_time')), "wb") as fw:
