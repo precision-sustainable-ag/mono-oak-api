@@ -100,15 +100,15 @@ class CameraDevice():
         self.depth.initialConfig.setMedianFilter(dai.MedianFilter.KERNEL_7x7)
         self.depth.setLeftRightCheck(True)
         self.depth.setExtendedDisparity(False)
-        self.depth.setSubpixel(False)
+        self.depth.setSubpixel(True)
 
         xout_depth = pipeline.create(dai.node.XLinkOut)
-        xout_depth.setStreamName("disparity")
+        xout_depth.setStreamName("depth")
         mono_right.out.link(self.depth.right)
         mono_left.out.link(self.depth.left)
 
         script_depth = pipeline.createScript()
-        self.depth.disparity.link(script_depth.inputs['depthframes'])
+        self.depth.depth.link(script_depth.inputs['depthframes'])
         script_depth.setScript("""
             while True:
                 frame = node.io['depthframes'].get()
