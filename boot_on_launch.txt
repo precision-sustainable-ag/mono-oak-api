@@ -1,10 +1,11 @@
 [Unit]
-Description=My Project
+Description=plantmap api project
 After=network.target
 
 [Service]
-WorkingDirectory=/home/pi/project/
-ExecStart=/usr/bin/python /home/pi/repos/script.py
+User=pi
+WorkingDirectory=/home/pi/repos/PlantMap3DCameraAPI
+ExecStart=/usr/bin/python -m flask run
 Restart=always
 
 [Install]
