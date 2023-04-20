@@ -14,7 +14,7 @@ class Status(Resource):
                 c.initialize_queues(cd)
                 return {'status': cd.status}, 200
             else:
-                return {'status': 'error', 'info': 'pipeline already uploaded!'}, 400
+                return {'status': 'active', 'info': 'pipeline already uploaded!'}, 200
 
         elif action == 'stop':
             cd = CameraDevice()
@@ -22,7 +22,7 @@ class Status(Resource):
                 cd.close_pipeline()
                 return {'status': cd.status}, 200
             else:
-                return {'status': 'error', 'info': 'pipeline not uploaded!'}, 400
+                return {'status': 'inactive', 'info': 'pipeline not uploaded!'}, 200
 
         else:
             return {'status': 'error', 'info': 'invalid option specified. use start or stop!'}, 400
