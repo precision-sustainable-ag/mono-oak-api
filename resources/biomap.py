@@ -14,6 +14,6 @@ class Biomap(Resource):
         if local_file is None:
             return {'status': 'error', 'info': 'no image!'}, 400
 
-        response = make_response(send_from_directory('./images', local_file, download_name="rgb.jpg", mimetype="image/jpeg"))
+        response = make_response(send_from_directory('./images', local_file, download_name="biomap.png", mimetype="image/png"))
 
         return response
