@@ -3,22 +3,20 @@ from flask_restful import Resource, Api
 import io
 
 from common.image_collector import Collector
-from common.device_maker import CameraDevice
+# from common.device_maker import CameraDevice
 
-from resources.status import Status
-from resources.snapshot import Snapshot
+from resources.biomap import Biomap
+from resources.cameras import Cameras
 from resources.preview import Preview
-from resources.rgb import RGB
-from resources.depth import Depth
-from resources.mono import Mono
+from resources.segmentation import Segmentation
+from resources.status import Status
 
 def register_endpoints(api):
-  api.add_resource(Snapshot, '/snapshot', '/snapshot')
+  api.add_resource(Biomap, '/biomap', '/biomap')
+  api.add_resource(Cameras, '/cameras')
+  api.add_resource(Preview, '/preview', '/preview/<string:camera_id>')
+  api.add_resource(Segmentation, '/segmentation', '/segmentation/<string:camera_id>')
   api.add_resource(Status, '/status', '/status/<string:action>')
-  api.add_resource(Preview, '/preview')
-  api.add_resource(RGB, '/rgb')
-  api.add_resource(Depth, '/depth')
-  api.add_resource(Mono, '/mono', '/mono/<string:side>')
 
 def create_app(debug=True):
     # Create app

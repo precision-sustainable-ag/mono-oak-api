@@ -5,11 +5,11 @@ import io
 # from common.device_maker import CameraDevice
 from common.image_collector import Collector
 
-class Preview(Resource):
-    def get(self, camera_id):
+class Biomap(Resource):
+    def get(self):
         c = Collector()
 
-        local_file = c.find_file('rgb' + str(camera_id))
+        local_file = c.find_file('biomap')
 
         if local_file is None:
             return {'status': 'error', 'info': 'no image!'}, 400

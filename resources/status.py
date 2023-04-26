@@ -1,28 +1,18 @@
 from flask_restful import Resource
 
-from common.device_maker import CameraDevice
+# from common.device_maker import CameraDevice
 from common.image_collector import Collector
+STATUS = 'inactive'
 
 class Status(Resource):
     def get(self, action):
         if action == 'start':
-            cd = CameraDevice()
-            c = Collector()
-            
-            if cd.status == 'inactive':
-                cd.upload_pipeline()
-                c.initialize_queues(cd)
-                return {'status': cd.status}, 200
-            else:
-                return {'status': 'active', 'info': 'pipeline already uploaded!'}, 200
+            STATUS = 'active'
 
         elif action == 'stop':
-            cd = CameraDevice()
-            if cd.status == 'active':
-                cd.close_pipeline()
-                return {'status': cd.status}, 200
-            else:
-                return {'status': 'inactive', 'info': 'pipeline not uploaded!'}, 200
+            STATUS = 'inactive'
 
         else:
             return {'status': 'error', 'info': 'invalid option specified. use start or stop!'}, 400
+        
+        return {'status': STATUS, 'time_elapsed': 0}, 200
